@@ -1,0 +1,114 @@
+var trap = function (height) {
+  if (height === undefined) return null;
+  if (height.length <= 2) return 0;
+
+  let trapped = 0;
+  // let prev_max = height[0];
+  let max_index = 0;
+  let max = height[0];
+  let forward_basin = 0;
+
+  // let rev_next_max = height[height.length - 1];
+  let rev_max_index = height.length - 1;
+  let rev_max = height[height.length - 1];
+  let rev_basin = 0;
+
+  let i = 0;
+  // let i = -1;
+  let j = height.length - 1;
+  // let j = height.length;
+
+  let isRightMax;
+  while (i < j) {
+    isRightMax = rev_max >= max;
+
+    if (isRightMax) {
+      if (height[i] < max) {
+        forward_basin += max - height[i];
+        // console.log(`=>> ${forward_basin}`)
+      } else if (height[i] === max) {
+        trapped += forward_basin;
+        max_index = i;
+        // console.log(`=>> max @ ${i} == ${max} || ${trapped}`);
+        forward_basin = 0;
+      } else {
+        trapped += forward_basin;
+        prevmax_index = i
+        max = height[i];
+        // console.log(`=>> max @ ${i} == ${max} || ${trapped}`);        
+        forward_basin = 0;
+        i--;
+      }
+      i++;
+    } else {
+      if (height[j] < rev_max) {
+        rev_basin += rev_max - height[j];
+        // console.log(`<<= ${rev_basin}`)
+      } else if (height[j] === rev_max) {
+        trapped += rev_basin;
+        rev_max_index = j;
+        // console.log(`<<= max @ ${j} == ${rev_max} || ${trapped}`);
+        rev_basin = 0;
+      } else {
+        trapped += rev_basin;
+        rev_max_index = j
+        rev_max = height[j];
+        // console.log(`<<= max @ ${j} == ${rev_max} || ${trapped}`);
+        rev_basin = 0;
+        j++;
+      }
+      j--;
+    }
+  }
+
+
+  if (i === j) {
+    if (isRightMax) {
+      trapped += forward_basin;
+    } else {
+      trapped += rev_basin;
+    }
+
+    // =======
+  //   if (height[i] >= max && height[i] >= rev_max) {
+  //     return trapped + forward_basin + rev_basin;
+  //   }
+  //   if (max === rev_max) {
+  //     return trapped + forward_basin + rev_basin + max - height[i];
+  //   }
+  //   let isRightMax = rev_max > max;
+
+  //   if (isRightMax) {
+  //     let diff = rev_max - max;
+  //     let lower_max = max;
+      
+  //     trapped += forward_basin + lower_max - height[i];
+  //     trapped += rev_basin - (rev_max_index - i) * diff 
+  //   } else {
+  //     let diff = max - rev_max;
+  //     let lower_max = rev_max;
+
+  //     trapped += rev_basin + lower_max - height[i];
+  //     trapped += forward_basin - 0;
+
+  //   }
+
+  // } else {
+  //   if (max === rev_max) {
+  //     return trapped + forward_basin + rev_basin;
+  //   }
+  //   // let basin = forward_basin + rev_basin + 0;
+  //   // trapped += basin;
+  }
+
+  return trapped;
+};
+
+console.log(trap([0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1])); // => 6
+console.log(trap([5, 5, 1, 7, 1, 1, 5, 2, 7, 6])); // => 23
+console.log(trap([0, 2, 0])); // 0
+// console.log(trap([3, 0, 2, 2, 2, 1, 4, 3, 4])); // 8
+//                   3  1  1| 1  2    <== 4  || 2
+//                              4
+//
+console.log(trap([2, 1, 0, 3])); // 3
