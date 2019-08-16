@@ -68,38 +68,26 @@ var trap = function (height) {
     } else {
       trapped += rev_basin;
     }
-
-    // =======
-  //   if (height[i] >= max && height[i] >= rev_max) {
-  //     return trapped + forward_basin + rev_basin;
-  //   }
-  //   if (max === rev_max) {
-  //     return trapped + forward_basin + rev_basin + max - height[i];
-  //   }
-  //   let isRightMax = rev_max > max;
-
-  //   if (isRightMax) {
-  //     let diff = rev_max - max;
-  //     let lower_max = max;
-      
-  //     trapped += forward_basin + lower_max - height[i];
-  //     trapped += rev_basin - (rev_max_index - i) * diff 
-  //   } else {
-  //     let diff = max - rev_max;
-  //     let lower_max = rev_max;
-
-  //     trapped += rev_basin + lower_max - height[i];
-  //     trapped += forward_basin - 0;
-
-  //   }
-
-  // } else {
-  //   if (max === rev_max) {
-  //     return trapped + forward_basin + rev_basin;
-  //   }
-  //   // let basin = forward_basin + rev_basin + 0;
-  //   // trapped += basin;
   }
+
+  // elegant version
+  // let result = 0;
+  // let start = 0;
+  // let end = height.length - 1;
+  // while (start < end) {
+  //   if (height[start] <= height[end]) {
+  //     let current = height[start];
+  //     while (height[++start] < current) {
+  //       result += current - height[start];
+  //     }
+  //   } else {
+  //     let current = height[end];
+  //     while (height[--end] < current) {
+  //       result += current - height[end];
+  //     }
+  //   }
+  // }
+  // return result;
 
   return trapped;
 };
