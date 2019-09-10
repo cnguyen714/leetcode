@@ -89,8 +89,26 @@ RandomizedCollection.prototype.remove = function (val) {
     let node = coll.val.pop();
     if (node) {
       let tail = this.list.tail;
-      
+      if (node === tail) {
+        this.list.pop();
+      } else {
+        let prev = node.prev;
+        let next = node.next;
+        this.list.tail.prev.next = null;
+        this.list.tail = this.list.tail.prev;
+        this.list.tail = tail.prev;
 
+        tail.prev = prev;
+        tail.next = next;
+      }
+
+      if (node.arrIndex === this.arr.length - 1) {
+        this.arr.pop();
+      } else {
+        let arrLast = this.arr.pop();
+        arrLast.arrIndex = node.arrIndex;
+        this.arr[node.arrIndex] = arrLast;
+      }
     } else {
       return false;
     }
