@@ -5,6 +5,14 @@
  */
 var NumArray = function (nums) {
   this.nums = nums;
+  this.sums = [];
+
+  let sum = 0;
+  for (let i = 0; i < this.nums.length; i++) {
+    this.sums.push(sum += this.nums[i]);
+  }
+  console.log(this.nums);
+  console.log(this.sums);
 };
 
 /** 
@@ -25,3 +33,9 @@ NumArray.prototype.sumRange = function (i, j) {
  * var obj = new NumArray(nums)
  * var param_1 = obj.sumRange(i,j)
  */
+
+let nums = [-2, 0, 3, -5, 2, -1];
+let array = new NumArray(nums);
+console.log(array.sumRange(0,2)); // 1
+console.log(array.sumRange(2,5)); // -1
+console.log(array.sumRange(0,5)); // -3
