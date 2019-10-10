@@ -13,7 +13,7 @@ var generateMatrix = function (n) {
   }
 
   let top = left = 0;
-  let bottom = right = n;
+  let bottom = right = n - 1;
   let pos = [0, 0];
   let val = 0;
   
@@ -26,21 +26,18 @@ var generateMatrix = function (n) {
   ];
   let vel = direction[dir];
 
-  while (pos[0] >= left &&
-         pos[0] < right &&
-         pos[1] >= top &&
-         pos[1] < bottom) {
+  while (val <= n*n) {
     matrix[pos[1]][pos[0]] = val += 1;
 
     switch(dir) {
       case 0:
-        if (pos[0] === right - 1) {
+        if (pos[0] === right) {
           dir++;
           top++;
         }
         break;
       case 1:
-        if (pos[1] === bottom - 1) {
+        if (pos[1] === bottom) {
           dir++;
           right--;
         }
@@ -48,11 +45,11 @@ var generateMatrix = function (n) {
       case 2:
         if (pos[0] === left) {
           dir++;
-          bottom++;
+          bottom--;
         }
         break;
       case 3:
-        if (pos[1] === top + 1) {
+        if (pos[1] === top) {
           dir++;
           left++;
         }
@@ -68,6 +65,7 @@ var generateMatrix = function (n) {
   return matrix;
 };
 
-// console.log(generateMatrix(1));
-// console.log(generateMatrix(2));
+console.log(generateMatrix(1));
+console.log(generateMatrix(2));
 console.log(generateMatrix(3));
+console.log(generateMatrix(4));
