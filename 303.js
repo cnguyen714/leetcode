@@ -21,11 +21,13 @@ var NumArray = function (nums) {
  * @return {number}
  */
 NumArray.prototype.sumRange = function (i, j) {
-  let sum = this.nums[i];
-  for (let k = i + 1; k <= j; k++) {
-    sum += this.nums[k]
-  }
-  return sum;
+  // let sum = this.nums[i];
+  // for (let k = i + 1; k <= j; k++) {
+  //   sum += this.nums[k]
+  // }
+  // return sum;
+  if (i === 0) return this.sums[j];
+  return this.sums[j] - this.sums[i-1];
 };
 
 /**
