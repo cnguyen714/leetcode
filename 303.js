@@ -4,12 +4,12 @@
  * @param {number[]} nums
  */
 var NumArray = function (nums) {
-  this.nums = nums;
+  // this.nums = nums;
   this.sums = [];
 
   let sum = 0;
-  for (let i = 0; i < this.nums.length; i++) {
-    this.sums.push(sum += this.nums[i]);
+  for (let i = 0; i < nums.length; i++) {
+    this.sums.push(sum += nums[i]);
   }
   console.log(this.nums);
   console.log(this.sums);
