@@ -10,8 +10,10 @@ var lengthOfLongestSubstring = function (s) {
 
   for (let i = 0; i < s.length; i++) {
     if (sub[s[i]]) {
-      i = sub[s[i]];
-      sub = {};
+      // i = sub[s[i]];
+      for (let j = i - Object.keys(sub).length; s[j] !== s[i]; j++) {
+        delete sub[s[j]];
+      }
     } else {
       sub[s[i]] = i;
     }
