@@ -6,25 +6,19 @@
 var lengthOfLongestSubstring = function (s) {
   let sub = {};
   let max = 0;
-  let length = 0;
+  let i = 0;
 
-  for (let i = 0; i < s.length; i++) {
-    if (sub[s[i]]) {
-      // i = sub[s[i]];
-      for (let j = i - Object.keys(sub).length; s[j] !== s[i]; j++) {
-        delete sub[s[j]];
-      }
-    } else {
-      sub[s[i]] = i;
+  for (let j = 0; j < s.length; j++) {
+    if (sub[s[j]]) {
+      i = Math.max(sub[s[j]], i);
     }
 
-    length = Object.keys(sub).length;
-    if (length > max) {
-      max = length;
-    };
+    max = Math.max(j - i + 1, max);
+    sub[s[j]] = j + 1;
   }
   return max;
 };
 
 console.log(lengthOfLongestSubstring("abcabcbb")); // 3
 console.log(lengthOfLongestSubstring("dvdf")); // 3
+console.log(lengthOfLongestSubstring(" ")); // 1
