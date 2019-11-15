@@ -21,11 +21,11 @@ function prodArray(input) {
     if(input[i] === 0) { 
       zero.push(i);
     } else {
-      left.push(input[i] * left[i - 1]);
+      left.push(input[i - 1] * left[i - 1]);
     }
   }
-  for (let i = input.length - 2; i > 0 && zero.length < 2; i--) {
-    right.push(input[i] * right[i + 1]);
+  for (let i = input.length - 2; i >= 0 && zero.length < 2; i--) {
+    right[i] = (input[i + 1] * right[i + 1]);
   }
 
 
