@@ -10,25 +10,37 @@ This should be solved in O(n) time without the use of division.
 function prodArray(input) {
   let zero = [];
   let output = [];
-  let left = [];
-  let right = [];
+  let left = [1];
+  let right = Array(input.length).fill(1);
 
-  for (let i = input.length - 1; i > 0 && zero.length < 2; i--) {
-
+  if (input[0] === 0) {
+    zero.push(0);
   }
+
+  for (let i = 1; i < input.length && zero.length < 2; i++) {
+    if(input[i] === 0) { 
+      zero.push(i);
+    } else {
+      left.push(input[i] * left[i - 1]);
+    }
+  }
+  for (let i = input.length - 2; i > 0 && zero.length < 2; i--) {
+    right.push(input[i] * right[i + 1]);
+  }
+
 
   for (let i = 0; i < input.length; i++) {
     if (zero.length > 1) {
-      ouput.push(0);
+      output.push(0);
     } else {
       if (zero.length === 1) {
         if (i === zero[0]) {
-          
+          output.push(left[i] * right[i]);
         } else {
-          ouput.push(0);
+          output.push(0);
         }
       } else {
-
+        output.push(left[i] * right[i]);
       }
     }
   }
