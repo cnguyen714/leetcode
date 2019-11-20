@@ -12,8 +12,8 @@ var longestPalindrome = function (s) {
   let even = false
   
   for (let i = 0; i < s.length - 1; i++) {
+    
     extend = 1;
-
     while ( s[i - extend] === s[i + extend] && 
             i - extend >= 0 && 
             i + extend < s.length ) {
@@ -21,12 +21,13 @@ var longestPalindrome = function (s) {
       newMax = 1 + extend * 2;
       if (newMax > max) {
         max = newMax;
-        out = s.substr(i - extend, i + extend);
+        out = s.substr(i - extend, i + 1 + extend);
       }
 
       extend++;
     }
 
+    extend = 1;
     if(s[i] === s[i+1]) {
       newMax = 2;
       if (newMax > max) {
@@ -41,7 +42,7 @@ var longestPalindrome = function (s) {
         newMax = 2 + extend * 2;
         if (newMax > max) {
           max = newMax;
-          out = s.substr(i - extend, i + extend);
+          out = s.substr(i - extend, i + 2 + extend);
         }
 
         extend++;
