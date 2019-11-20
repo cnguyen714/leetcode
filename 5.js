@@ -9,10 +9,15 @@ var longestPalindrome = function (s) {
   let newMax = 0;
   let out = "";
   let extend = 1;
-  let even = false
+
+  if(s.length >= 1) {
+    out = s[0];
+    max = 1;
+  }
   
   for (let i = 0; i < s.length - 1; i++) {
     
+
     extend = 1;
     while ( s[i - extend] === s[i + extend] && 
             i - extend >= 0 && 
@@ -21,7 +26,7 @@ var longestPalindrome = function (s) {
       newMax = 1 + extend * 2;
       if (newMax > max) {
         max = newMax;
-        out = s.substr(i - extend, i + 1 + extend);
+        out = s.substring(i - extend, i + 1 + extend);
       }
 
       extend++;
@@ -32,7 +37,7 @@ var longestPalindrome = function (s) {
       newMax = 2;
       if (newMax > max) {
         max = newMax;
-        out = s.substr(i, i + 2);
+        out = s.substring(i, i + 2);
       }
 
       while ( s[i - extend] === s[i + 1 + extend] &&
@@ -42,7 +47,7 @@ var longestPalindrome = function (s) {
         newMax = 2 + extend * 2;
         if (newMax > max) {
           max = newMax;
-          out = s.substr(i - extend, i + 2 + extend);
+          out = s.substring(i - extend, i + 2 + extend);
         }
 
         extend++;
@@ -55,3 +60,4 @@ var longestPalindrome = function (s) {
 
 console.log(longestPalindrome("bb"));
 console.log(longestPalindrome("babad"));
+console.log(longestPalindrome("cbbd"));
