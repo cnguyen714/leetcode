@@ -1,3 +1,9 @@
+
+//https://leetcode.com/problems/trapping-rain-water/
+/**
+ * @param {number[]} height
+ * @return {number}
+ */
 var trap = function (height) {
   if (height === undefined) return null;
   if (height.length <= 2) return 0;
