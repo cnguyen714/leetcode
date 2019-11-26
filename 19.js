@@ -7,9 +7,9 @@
  * }
  */
 
-function ListNode(val) {
+function ListNode(val, node = null) {
   this.val = val;
-  this.next = null;
+  this.next = node;
 }
 
 //====
@@ -22,7 +22,7 @@ function ListNode(val) {
 var removeNthFromEnd = function (head, n) {
   let nth = head;
   let prev = null;
-  let it = head;
+  let it = null;
 
   while(n > 0) {
     it = it.next;
@@ -35,6 +35,24 @@ var removeNthFromEnd = function (head, n) {
     nth = nth.next;
   }
 
+  if(it === head) {
+    head = it.next;
+  } else {
+    prev.next = next;
+  }
 
-
+  return head;
 };
+
+let e = new Node(5);
+let d = new Node(4,e);
+let c = new Node(3,d);
+let b = new Node(2,c);
+let a = new Node(1,b);
+
+let it = a;
+
+while(it != null) {
+  console.log(it.val);
+  it = it.next;
+}
