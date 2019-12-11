@@ -25,6 +25,7 @@ var mergeTwoLists = function (l1, l2) {
         i = i.next;
       } else {
         listPos.next = i;
+        listPos = listPos.next;
         i = i.next;
       }
     } else {
@@ -34,12 +35,34 @@ var mergeTwoLists = function (l1, l2) {
         j = j.next;
       } else {
         listPos.next = j;
+        listPos = listPos.next;
         j = j.next;
       }
     }
   }
 
-  while () {
-
+  while (i != null || j != null) {
+    if (j === null) {
+      if (mergedRoot === null) {
+        mergedRoot = i;
+        listPos = mergedRoot;
+        i = i.next;
+      } else {
+        listPos.next = i;
+        listPos = listPos.next;
+        i = i.next;
+      }
+    } else {
+      if (mergedRoot === null) {
+        mergedRoot = j;
+        listPos = mergedRoot;
+        j = j.next;
+      } else {
+        listPos.next = j;
+        listPos = listPos.next;
+        j = j.next;
+      }
+    }
   }
+  return mergedRoot;
 };
