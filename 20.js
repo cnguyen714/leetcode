@@ -13,16 +13,16 @@ var isValid = function (s) {
   let stack = [];
 
   for (let i = 0; i < s.length; i++) {
-    if (s[i] === "(" || s[i] === "[" || s[i] === "{") {
-      stack.push(s[i]);
-    } else if (s[i] === ")" || s[i] === "]" || s[i] === "}") {
-      if (map[stack.pop()] != s[i]) {
+    let topChar = s[i];
+    if (topChar === "(" || topChar === "[" || topChar === "{") {
+      stack.push(topChar);
+    } else if (topChar === ")" || topChar === "]" || topChar === "}") {
+      if (map[stack.pop()] != topChar) {
         return false;
       }
     }
   }
-  if(stack.length != 0) return false;
-  return true;
+  return stack.length === 0;
 };
 
 console.log(isValid("()"));
