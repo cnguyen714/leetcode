@@ -15,9 +15,9 @@ var mergeKLists = function (lists) {
 
 };
 
-function ListNode(val) {
+function ListNode(val, next = null) {
   this.val = val;
-  this.next = null;
+  this.next = next;
 }
 
 function HeapNode(head) {
@@ -38,12 +38,43 @@ function MinHeap(node = null) {
   };
 
   this.pop = function() {
-    if(this.heap.length === 1) return null;
+    if(this.empty()) return null;
 
+    let val = this.heap[1].val;
+    this.heap[1] = this.heap[1].next;
+    if(this.heap[1] === null) {
+      this.heap[1] = this.heap.pop();
+    }
+    this.siftDown(1);
+
+    return val;
   };
 
   this.siftDown = function(i) {
+    let left = this.getLeft(i);
+    let right = this.getRight(i);
+    while (left || right) {
+      if (left && right) {
+        if (this.heap[i].val <= this.heap[left].val && this.heap[i].val <= this.heap[right].val) return;
+        if (this.heap[i].val > this.heap[left].val && this.heap[left].val <= this.heap[right].val) {
+          this.swapNodes(i, left);
+          i = left;
+        } else {
+          this.swapNodes(i, right);
+          i = right;
+        }
+      } else {
+        if (this.heap[i].val <= this.heap[left].val) {
+          return;
+        } else {
+          this.swapNodes(i, left);
+          i = left;
+        }
+      }
 
+      left = this.getLeft(i);
+      right = this.getRight(i);
+    }
   }
 
   this.siftUp = function(i) {
@@ -75,7 +106,7 @@ function MinHeap(node = null) {
   }
 }
 
-let min = new MinHeap(new ListNode(5));
-min.push(new ListNode(7));
-min.push(new ListNode(3));
+let min = new MinHeap(new ListNode(1, new ListNode(4, new ListNode(5))));
+min.push(new ListNode(1, new ListNode(3, new ListNode(4))));
+min.push(new ListNode(2, new ListNode(6)));
 console.log(min.heap);
