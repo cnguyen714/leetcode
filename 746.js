@@ -7,7 +7,7 @@ var minCostClimbingStairs = function (cost) {
   let mins = [cost[0], cost[1]];
 
   for (let i = 2; i < cost.length; i++) {
-    mins.push(mins[i - 2] + cost[i] <= mins[i - 1] + cost[i] ? mins[i - 2] + cost[i] : mins[i - 1] + cost[i]);
+    mins.push(Math.min(mins[i - 2] + cost[i], mins[i - 1] + cost[i]));
   }
 
   return Math.min(mins[mins.length - 2], mins[mins.length - 1])
