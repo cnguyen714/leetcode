@@ -4,5 +4,9 @@
  * @return {number}
  */
 var climbStairs = function (n) {
+  let dp = Array(n).fill(0);
 
+
+
+  return
 };
