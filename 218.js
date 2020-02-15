@@ -8,35 +8,37 @@
 // Use a heap to keep track of tallest buildings
 var getSkyline = function (buildings) {
   if(buildings.length === 0) return [[0,0]];
-  let runningBuildings = [buildings[0]];
+  // let runningBuildings = [buildings[0]];
 
-  let h = runningBuildings[0][2];
-  let x = runningBuildings[0][0];
-  let skyline = [[x, h]];
-
-  for (let i = 1; i < buildings.length; i++) {
-    let building = buildings[i];
-    if (building[0] === skyline[skyline.length - 1][0] && building > h) {
-      h = building[2];
-      skyline[skyline.length - 1][1] = h;
-    } else if (building[2] >)
-
-    for (let j = 0; j < runningBuildings.length; j++) {
-      if()
-    }
-    runningBuildings.push(building);
-  }
+  // let h = runningBuildings[0][2];
+  // let x = runningBuildings[0][0];
+  // let skyline = [[x, h]];
 
 
+
+  // for (let i = 1; i < buildings.length; i++) {
+  //   let building = buildings[i];
+  //   if (building[0] === skyline[skyline.length - 1][0] && building > h) {
+  //     h = building[2];
+  //     skyline[skyline.length - 1][1] = h;
+  //   } else if (building[2] >)
+
+  //   for (let j = 0; j < runningBuildings.length; j++) {
+  //     if()
+  //   }
+  //   runningBuildings.push(building);
+  // }
+
+  let buildingHeap = new MaxHeap();
 
 };
 
-function ListNode(val, next = null) {
-  this.val = val;
-  this.next = next;
+function BuildingNode(height, building = null) {
+  this.val = height;
+  this.building = building;
 }
 
-function MinHeap(node = null) {
+function MaxHeap(node = null) {
   this.heap = [null];
   if (node !== null) this.heap.push(node);
 
@@ -53,27 +55,24 @@ function MinHeap(node = null) {
     if (this.empty()) return null;
 
     let val = this.heap[1].val;
-    this.heap[1] = this.heap[1].next;
-    if (this.heap[1] === null) {
-      this.heap[1] = this.heap.pop();
-      if (this.heap[1] === null) {
-        this.heap.pop();
-        return val;
-      }
-    }
-
+    this.swapNodes(1, this.heap.length - 1);
+    this.heap.pop();
     this.siftDown(1);
 
     return val;
   };
+
+  this.peek = function () {
+    return this.heap[1].building;
+  }
 
   this.siftDown = function (i) {
     let left = this.getLeft(i);
     let right = this.getRight(i);
     while (left || right) {
       if (left && right) {
-        if (this.heap[i].val <= this.heap[left].val && this.heap[i].val <= this.heap[right].val) return;
-        if (this.heap[i].val > this.heap[left].val && this.heap[left].val <= this.heap[right].val) {
+        if (this.heap[i].val >= this.heap[left].val && this.heap[i].val >= this.heap[right].val) return;
+        if (this.heap[i].val < this.heap[left].val && this.heap[left].val >= this.heap[right].val) {
           this.swapNodes(i, left);
           i = left;
         } else {
@@ -81,7 +80,7 @@ function MinHeap(node = null) {
           i = right;
         }
       } else {
-        if (this.heap[i].val <= this.heap[left].val) {
+        if (this.heap[i].val >= this.heap[left].val) {
           return;
         } else {
           this.swapNodes(i, left);
@@ -97,7 +96,7 @@ function MinHeap(node = null) {
   this.siftUp = function (i) {
     let parent = this.getParent(i);
     if (parent === 0) return;
-    while (this.heap[i].val < this.heap[parent].val) {
+    while (this.heap[i].val > this.heap[parent].val) {
       this.swapNodes(i, parent);
       i = parent;
       parent = this.getParent(i);
@@ -122,3 +121,8 @@ function MinHeap(node = null) {
     return i * 2 + 1 < this.heap.length ? i * 2 + 1 : null;
   }
 }
+
+let maxHeap = new MaxHeap(new BuildingNode(3, [0, 3, 3]));
+maxHeap.push(new BuildingNode(5, [0, 4, 5]));
+console.log(maxHeap.pop());
+console.log(maxHeap.peek());
