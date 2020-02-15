@@ -88,6 +88,9 @@ var getSkyline = function (buildings) {
         // only push skyline if its a lesser height
         if (max[2] !== prevMax[2]) skyline.push([prevMax[1], max[2]]);
         prevMax = max;
+        maxHeap.push(new BuildingNode(prevMax[2], prevMax));
+        i--;
+        break crunch;
       } else {
         // otherwise, retain prevMax and discard max
         maxHeap.pop();
