@@ -37,8 +37,25 @@ var getSkyline = function (buildings) {
   let x;
   let prevMax;
 
+  /*
+    add buildings to heap to keep track of tallest building
+    iterate through buildings
+    if new building is out of range of the current tallest
+      ""
+      find next tallest building that extends farther than tallest in the heap
+        if a building in the heap doesn't extend past the tallest, discard it
+        if it extends, set it as the tallest and repeat until its in range or there are no other buildings
+      ""
+    if there are no other tallest, set skyline to the next iterated building
+    if there are no other buildings to iterate, repeat heap crunch
+      """
+    return skyline
+  */
+
   for (let i = 0; i < buildings.length; i++) {
     max = maxHeap.peek();
+    x = max[0];
+    // if there are currently no buildings, the next building is the tallest
     if (max === null) {
       max = buildings[i];
       maxHeap.push(new BuildingNode(max[2], max));
@@ -49,8 +66,17 @@ var getSkyline = function (buildings) {
 
     let next = buildings[i];
     
-    // If the next building is outside the max's range, collapse heap
-    while(next[0] > max[1]) { 
+    // if building is in range, and is taller than tallest, set skyline
+    if (next[2] > max[2]) {
+      max = next;
+      skyline.push([max[0], max[2]]);
+      maxHeap.push(new BuildingNode(max[2], max));
+      x = max[0];
+      continue;
+    }
+
+    // if not in range, find the next tallest that extends past the current tallest
+    while (next[0] > max[1]) {
       if (prevMax === null) prevMax = maxHeap.pop();
       x = prevMax[1];
       max = maxHeap.peek();
@@ -66,13 +92,13 @@ var getSkyline = function (buildings) {
       }
 
       // if new max extends farther than current x position, set it as the new max
-      if(x < max[1]) {
-        skyline.push([prevMax[1], max[2]]);
+      if (x < max[1]) {
+        if (max[2] !== prevMax[2]) skyline.push([prevMax[1], max[2]]);
         prevMax = max;
       } else {
+        // otherwise, retain prevMax and discard max
         max = maxHeap.pop();
       }
-      
     }
   }
 
