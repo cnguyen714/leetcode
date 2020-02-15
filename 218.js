@@ -48,6 +48,7 @@ var getSkyline = function (buildings) {
       } else if (next[1] > max[1]) { // if not tallest, add to heap if extends
         if (next[1] > max[1]) maxHeap.push(new BuildingNode(next[2], next));
       }
+      continue;
     }
     
     // if building is in range, and is taller than tallest, set skyline
@@ -57,7 +58,10 @@ var getSkyline = function (buildings) {
         skyline.push([max[0], max[2]]);
         maxHeap.push(new BuildingNode(max[2], max));
       } else if (next[1] > max[1]) { // if not tallest, add to heap if extends
-        if (next[1] > max[1]) maxHeap.push(new BuildingNode(next[2], next));
+        if (next[2] === max[2]) {
+          maxHeap.peek()[1] = next[1];
+        }
+        maxHeap.push(new BuildingNode(next[2], next));
       }
       continue;
     }
@@ -65,7 +69,7 @@ var getSkyline = function (buildings) {
     // if not in range, find the next tallest that extends past the current tallest
     let prevMax;
     crunch:
-    while (next[0] > max[1]) {
+    if (next[0] > max[1]) {
       if (!prevMax) prevMax = maxHeap.pop();
       max = maxHeap.peek();
 
@@ -85,6 +89,8 @@ var getSkyline = function (buildings) {
         if (max[2] !== prevMax[2]) skyline.push([prevMax[1], max[2]]);
         prevMax = max;
         maxHeap.pop();
+        i--;
+        break crunch;
       } else {
         // otherwise, retain prevMax and discard max
         maxHeap.pop();
@@ -92,7 +98,7 @@ var getSkyline = function (buildings) {
     }
   }
 
-  if (maxHeap.peek !== null) {
+  if (maxHeap.peek() !== null) {
     let prevMax;
     crunch2:
     while (true) {
@@ -222,5 +228,7 @@ function MaxHeap(node = null) {
 // >> [[0,3],[5,0]]
 // console.log(getSkyline([[1, 2, 1], [1, 2, 2], [1, 2, 3]]));
 // >> [[1,3],[2,0]]
-console.log(getSkyline([[0, 2, 3], [2, 4, 3], [4, 6, 3]]));
+// console.log(getSkyline([[0, 2, 3], [2, 4, 3], [4, 6, 3]]));
 // >> [[1,3],[2,0]]
+console.log(getSkyline([[0, 5, 7], [5, 10, 7], [5, 10, 12], [10, 15, 7], [15, 20, 7], [15, 20, 12], [20, 25, 7]]));
+// >> [[0,7],[5,12],[10,7],[15,12],[20,7],[25,0]]
