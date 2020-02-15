@@ -29,8 +29,67 @@ var getSkyline = function (buildings) {
   //   runningBuildings.push(building);
   // }
 
-  let buildingHeap = new MaxHeap();
+  // let maxHeap = new MaxHeap(new BuildingNode(buildings[0][2], buildings[0]));
+  // let skyline = [[buildings[0][0], buildings[0][2]]];
+  let maxHeap = new MaxHeap();
+  let skyline = [];
+  let max;
+  let x;
+  let prevMax;
 
+  for (let i = 0; i < buildings.length; i++) {
+    max = maxHeap.peek();
+    if (max === null) {
+      max = buildings[i];
+      maxHeap.push(new BuildingNode(max[2], max));
+      x = max[0];
+      skyline.push([x, max[2]]);
+      continue;
+    }
+
+    let next = buildings[i];
+    
+    // If the next building is outside the max's range, collapse heap
+    while(next[0] > max[1]) { 
+      if (prevMax === null) prevMax = maxHeap.pop();
+      x = prevMax[1];
+      max = maxHeap.peek();
+
+      // if heap is empty, drop skyline and move to the next building
+      if (max === null) {
+        skyline.push([x, 0]);
+
+        max = next;
+        maxHeap.push(new BuildingNode(max[2], max));
+        skyline.push([max[0], max[2]]);
+        break;
+      }
+
+      // if new max extends farther than current x position, set it as the new max
+      if(x < max[1]) {
+        skyline.push([prevMax[1], max[2]]);
+        prevMax = max;
+      } else {
+        max = maxHeap.pop();
+      }
+      
+    }
+  }
+
+  while(maxHeap.peek() !== null) {
+    prevMax = maxHeap.pop();
+    max = maxHeap.peek();
+
+    // if heap is empty, terminate skyline
+    if (max === null) {
+      skyline.push([prevMax[1], 0]);
+      break;
+    }
+    // otherwise reduce the heap until a max extends to the next building
+    skyline.push([prevMax[1], max[2]]);
+  }
+
+  return skyline;
 };
 
 function BuildingNode(height, building = null) {
@@ -54,16 +113,16 @@ function MaxHeap(node = null) {
   this.pop = function () {
     if (this.empty()) return null;
 
-    let val = this.heap[1].val;
+    let building = this.heap[1].building;
     this.swapNodes(1, this.heap.length - 1);
     this.heap.pop();
     this.siftDown(1);
 
-    return val;
+    return building;
   };
 
   this.peek = function () {
-    return this.heap[1].building;
+    return this.heap[1] ? this.heap[1].building : null;
   }
 
   this.siftDown = function (i) {
@@ -125,4 +184,7 @@ function MaxHeap(node = null) {
 let maxHeap = new MaxHeap(new BuildingNode(3, [0, 3, 3]));
 maxHeap.push(new BuildingNode(5, [0, 4, 5]));
 console.log(maxHeap.pop());
+console.log(maxHeap.pop());
 console.log(maxHeap.peek());
+
+// console.log(getSkyline([[2, 9, 10], [3, 7, 15], [5, 12, 12], [15, 20, 10], [19, 24, 8]]));
