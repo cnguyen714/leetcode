@@ -4,33 +4,10 @@
  * @return {number[][]}
  */
 
-
 // Use a heap to keep track of tallest buildings
 var getSkyline = function (buildings) {
-  if(buildings.length === 0) return [[0,0]];
-  // let runningBuildings = [buildings[0]];
+  if(buildings.length === 0) return [];
 
-  // let h = runningBuildings[0][2];
-  // let x = runningBuildings[0][0];
-  // let skyline = [[x, h]];
-
-
-
-  // for (let i = 1; i < buildings.length; i++) {
-  //   let building = buildings[i];
-  //   if (building[0] === skyline[skyline.length - 1][0] && building > h) {
-  //     h = building[2];
-  //     skyline[skyline.length - 1][1] = h;
-  //   } else if (building[2] >)
-
-  //   for (let j = 0; j < runningBuildings.length; j++) {
-  //     if()
-  //   }
-  //   runningBuildings.push(building);
-  // }
-
-  // let maxHeap = new MaxHeap(new BuildingNode(buildings[0][2], buildings[0]));
-  // let skyline = [[buildings[0][0], buildings[0][2]]];
   let maxHeap = new MaxHeap();
   let skyline = [];
   let max;
@@ -62,6 +39,16 @@ var getSkyline = function (buildings) {
     }
 
     let next = buildings[i];
+
+    if (next[0] === max[0]) {
+      if (next[2] > max[2]) {
+        max = next;
+        skyline[skyline.length - 1][1] = max[2];
+        maxHeap.push(new BuildingNode(max[2], max));
+      } else if (next[1] > max[1]) { // if not tallest, add to heap if extends
+        if (next[1] > max[1]) maxHeap.push(new BuildingNode(next[2], next));
+      }
+    }
     
     // if building is in range, and is taller than tallest, set skyline
     if (next[0] <= max[1]) {
@@ -70,7 +57,7 @@ var getSkyline = function (buildings) {
         skyline.push([max[0], max[2]]);
         maxHeap.push(new BuildingNode(max[2], max));
       } else if (next[1] > max[1]) { // if not tallest, add to heap if extends
-        maxHeap.push(new BuildingNode(next[2], next));
+        if (next[1] > max[1]) maxHeap.push(new BuildingNode(next[2], next));
       }
       continue;
     }
@@ -97,25 +84,38 @@ var getSkyline = function (buildings) {
         // only push skyline if its a lesser height
         if (max[2] !== prevMax[2]) skyline.push([prevMax[1], max[2]]);
         prevMax = max;
+        maxHeap.pop();
       } else {
         // otherwise, retain prevMax and discard max
         maxHeap.pop();
-        max = prevMax;
       }
     }
   }
 
-  while(maxHeap.peek() !== null) {
-    prevMax = maxHeap.pop();
-    max = maxHeap.peek();
+  if (maxHeap.peek !== null) {
+    let prevMax;
+    crunch2:
+    while (true) {
+      if (!prevMax) prevMax = maxHeap.pop();
+      max = maxHeap.peek();
 
-    // if heap is empty, terminate skyline
-    if (max === null) {
-      skyline.push([prevMax[1], 0]);
-      break;
+      // if heap is empty, terminate skyline
+      if (max === null) {
+        skyline.push([prevMax[1], 0]);
+        break crunch2;
+      }
+
+      // if new max extends farther than current x position, set it as the new max
+      if (prevMax[1] < max[1]) {
+        // only push skyline if its a lesser height
+        if (max[2] !== prevMax[2]) skyline.push([prevMax[1], max[2]]);
+        prevMax = max;
+        maxHeap.pop();
+      } else {
+        // otherwise, retain prevMax and discard max
+        maxHeap.pop();
+      }
     }
-    // otherwise reduce the heap until a max extends to the next building
-    skyline.push([prevMax[1], max[2]]);
   }
 
   return skyline;
@@ -216,5 +216,11 @@ function MaxHeap(node = null) {
 // console.log(maxHeap.pop());
 // console.log(maxHeap.peek());
 
-console.log(getSkyline([[2, 9, 10], [3, 7, 15], [5, 12, 12], [15, 20, 10], [19, 24, 8]]));
+// console.log(getSkyline([[2, 9, 10], [3, 7, 15], [5, 12, 12], [15, 20, 10], [19, 24, 8]]));
 // >> [ [2 10], [3 15], [7 12], [12 0], [15 10], [20 8], [24, 0] ]
+// console.log(getSkyline([[0, 2, 3], [2, 5, 3]]));
+// >> [[0,3],[5,0]]
+// console.log(getSkyline([[1, 2, 1], [1, 2, 2], [1, 2, 3]]));
+// >> [[1,3],[2,0]]
+console.log(getSkyline([[0, 2, 3], [2, 4, 3], [4, 6, 3]]));
+// >> [[1,3],[2,0]]
