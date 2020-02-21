@@ -18,6 +18,7 @@ function ListNode(val, next = null) {
 }
 
 var reverseList = function (head) {
+  if (!head) return head;
   let stack = [];
 
   let it = head;
