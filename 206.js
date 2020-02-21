@@ -18,13 +18,29 @@ function ListNode(val, next = null) {
 }
 
 var reverseList = function (head) {
+  let stack = [];
 
+  let it = head;
+  while(it) {
+    stack.push(it);
+    it = it.next;
+  }
+
+  head = stack.pop();
+  it = head;
+
+  while(stack.length > 0) {
+    it.next = stack.pop();
+    it = it.next;
+  }
+  it.next = null;
+
+  return head;
 };
 
 let head = new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5)))));
-
+head = reverseList(head);
 let it = head;
-
 while(it) {
   console.log(it.val);
   it = it.next;
